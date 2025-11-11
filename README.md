@@ -97,7 +97,7 @@ I would want some kind of gnuplot or other plotting library integration.
 
 Layout design... There will actually be CSS in the real one.
 
-[layout](scr.png)
+![layout](scr.png)
 
 I plan to use the other pages for file upload and management, ie.
 uploading downloading and deleting files from the system. The main
