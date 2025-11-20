@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Rocketry Data</title>
+  <meta name="description" content="final project for cs408">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+</head>
+
+<body>
+</body>
+
+   <p>
+      <a href="index.html">home</a>
+   </p>
+
+   <div class="graph_content">
+
+      <div class="graph_window">
+         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+         <canvas id="data_graph"></canvas>
+         <script>
+           const ctx = document.getElementById('data_graph');
+
+           new Chart(ctx, {
+             type: 'bar',
+             data: {
+               labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+               datasets: [{
+                 label: '# of Votes',
+                 data: [12, 19, 3, 5, 2, 3],
+                 borderWidth: 1
+               }]
+             },
+             options: {
+               scales: {
+                 y: {
+                   beginAtZero: true
+                 }
+               }
+             }
+           });
+         </script>
+      </div>
+
+      <div class="graph_menu">
+         <table>
+            <tr>
+               <th>
+                  Name
+               </th>
+               <th>
+                  File
+               </th>
+               <th>
+                  Actions
+               </th>
+            </tr>
+            <tr>
+               <td>placeholder_name</td>
+               <td>file_name.csv</td>
+               <td>actions</td>
+            </tr>
+            <tr>
+               <td>placeholder_name</td>
+               <td>file_name.csv</td>
+               <td>actions</td>
+            </tr>
+            <tr>
+               <td>placeholder_name</td>
+               <td>file_name.csv</td>
+               <td>actions</td>
+            </tr>
+            <tr>
+               <td>placeholder_name</td>
+               <td>file_name.csv</td>
+               <td>actions</td>
+            </tr>
+         </table>
+      </div>
+
+      <div class="graph_selector">
+         <table>
+             <tr>
+                <td>
+                   Pe
+                </td>
+                <td>
+                   <label for="send_Pe" hidden>
+                      Pe value to use in calculations
+                   </label>
+                   <input type='text' id='send_Pe' placeholder='---'>
+                </td>
+                <td>
+                   k
+                </td>
+                <td>
+                   <label for="send_k" hidden>
+                      k value to use in calculations
+                   </label>
+                   <input type='text' id='send_k' placeholder='---'>
+                </td>
+                <td>
+                   pp
+                </td>
+                <td>
+                   <label for="send_pp" hidden>
+                      pp value to use in calculations
+                   </label>
+                   <input type='text' id='send_pp' placeholder='---'>
+                </td>
+                <td>
+                   Start Pos
+                </td>
+                <td>
+                   <input type='range' min='0' max='400' value='0' class='slider' id='end_pos' oninput="startChange(this.value)">
+                </td>
+                <td id='start_pos_out'>
+                   0
+                </td>
+             </tr>
+             <tr>
+                <td>
+                   Pa
+                </td>
+                <td>
+                   <label for="send_Pa" hidden>
+                      Pa value to use in calculations
+                   </label>
+                   <input type='text' id='send_Pa' placeholder='---'>
+                </td>
+                <td>
+                   Ae
+                </td>
+                <td>
+                   <label for="send_Ae" hidden>
+                      Ae value to use in calculations
+                   </label>
+                   <input type='text' id='send_Ae' placeholder='---'>
+                </td>
+                <td>
+                   Selected
+                </td>
+                <td>
+                   Placeholder
+                </td>
+                <td>
+                   End Pos
+                </td>
+                <td>
+                   <input type='range' min='0' max='400' value='0' class='slider' id='end_pos' oninput="endChange(this.value)">
+                </td>
+                <td id='end_pos_out'>
+                   0
+                </td>
+             </tr>
+             <tr>
+                <td>
+                   A*
+                </td>
+                <td>
+                   <label for="send_Astar" hidden>
+                      A* value to use in calculations
+                   </label>
+                   <input class="input_field" type='text' id='send_Astar' placeholder='---'>
+                </td>
+                <td>
+                   R
+                </td>
+                <td>
+                   <label for="send_R" hidden>
+                      R value to use in calculations
+                   </label>
+                   <input class="input_field" type='text' id='send_R' placeholder='---'>
+                </td>
+                <td>
+                   Save Name
+                </td>
+                <td>
+                   <label for="send_name" hidden>
+                      Name used to save the configuration
+                   </label>
+                   <input class="input_field" type='text' id='send_name' placeholder='---'>
+                </td>
+             </tr>
+             <tr>
+                <td colspan="2">
+                   <input type='button' value='Set Values' id='set_values'
+                          onClick="">
+                </td>
+                <td colspan="2">
+                   <input type='button' value='Save Configuration' id='save_config'
+                          onClick="">
+                </td>
+             </tr>
+         </table>
+      </div>
+
+   </div>
+</html>
