@@ -1,20 +1,20 @@
 
 body {
    margin: 100px;
+   background-color: #ddd;
+   font-size: 18px;
 }
 
-h1{
-  border-color: #d3e644;
-  border-style: dashed;
+input {
+   font-size: 14px;
 }
 
 .graph_content {
    display: grid;
    column-gap: 20px;
    row-gap: 20px;
-   grid-template-columns: 3fr 1fr;
-   grid-template-rows: 3fr 1fr;
-
+   grid-template-columns: 2.5fr 1fr;
+   grid-template-rows: 2.5fr 1fr;
 }
 
 .file_content {
@@ -23,12 +23,28 @@ h1{
    grid-template-columns: 1fr 1fr;
 }
 
+.listing-table {
+   width: 100%;
+   border-collapse: collapse;
+   border: 3px solid black;
+}
+
+.listing-table th {
+   border: 1px solid black;
+   border-collapse:collapse;
+}
+
+.listing-table td {
+   border: 1px solid black;
+   border-collapse:collapse;
+}
+
 th, td {
-   padding-left: 20px;
-   padding-right: 20px;
+   padding-left: 15px;
+   padding-right: 15px;
 }
 
 .graph_menu th, td {
-   padding-top: 5px;
-   padding-bottom: 5px;
+   padding-top: 2px;
+   padding-bottom: 2px;
 }
