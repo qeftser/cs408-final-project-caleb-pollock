@@ -1,8 +1,11 @@
 
-function startChange(val) {
-   document.getElementById('start_pos_out').innerHTML = val;
-}
+// db name:
+// caleb-pollock-final-project-db
 
-function endChange(val) {
-   document.getElementById('end_pos_out').innerHTML = val;
-}
+// function name:
+// caleb-pollock-final-project-func
+
+// role name:
+// caleb-pollock-final-project-role
+
+// nothing here really...
