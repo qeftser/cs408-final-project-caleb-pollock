@@ -7,7 +7,8 @@
   <meta name="description" content="final project for cs408">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
-    <script src="js/main.js"></script>
+  <script src="node_modules/chart.js/dist/chart.umd.min.js"></script>
+  <script src="js/graph.js"></script>
 </head>
 
 <body>
@@ -20,94 +21,11 @@
    <div class="graph_content">
 
       <div class="graph_window">
-         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
          <canvas id="data_graph"></canvas>
-         <script>
-           const ctx = document.getElementById('data_graph');
-
-           Chart.defaults.color = "#000";
-
-           new Chart(ctx, {
-             type: 'line',
-             data: {
-               labels: [0,1,2,3,4,5],
-               datasets: [{
-                 label: 'thrust',
-                 data: [12, 19, 3, 5, 2, 3],
-                 borderWidth: 4
-               }]
-             },
-             options: {
-               plugins: {
-                  legend: {
-                     labels: {
-                        font: {
-                           size: 20
-                        }
-                     }
-                  }
-               },
-               scales: {
-                 y: {
-                   grid: {
-                      lineWidth: 2
-                   },
-                   ticks: {
-                      font: {
-                         size: 16,
-                      }
-                   },
-                   beginAtZero: true
-                 },
-                 x: {
-                   grid: {
-                      lineWidth: 2
-                   },
-                   ticks: {
-                      font: {
-                         size: 16
-                      }
-                   },
-                 }
-               }
-             }
-           });
-         </script>
       </div>
 
       <div class="graph_menu">
-         <table class='listing-table'>
-            <tr>
-               <th>
-                  Name
-               </th>
-               <th>
-                  File
-               </th>
-               <th>
-                  Actions
-               </th>
-            </tr>
-            <tr>
-               <td>placeholder_name</td>
-               <td>file_name.csv</td>
-               <td>actions</td>
-            </tr>
-            <tr>
-               <td>placeholder_name</td>
-               <td>file_name.csv</td>
-               <td>actions</td>
-            </tr>
-            <tr>
-               <td>placeholder_name</td>
-               <td>file_name.csv</td>
-               <td>actions</td>
-            </tr>
-            <tr>
-               <td>placeholder_name</td>
-               <td>file_name.csv</td>
-               <td>actions</td>
-            </tr>
+         <table id='graph-menu-listing-table' class='graph-menu-listing-table'>
          </table>
       </div>
 
@@ -145,7 +63,7 @@
                    Start Pos
                 </td>
                 <td>
-                   <input type='range' min='0' max='400' value='0' class='slider' id='end_pos' oninput="startChange(this.value)">
+                   <input type='range' min='0' max='400' value='0' class='slider' id='start_pos' oninput="startChange(this.value)">
                 </td>
                 <td id='start_pos_out'>
                    0
@@ -218,11 +136,11 @@
              <tr>
                 <td colspan="2">
                    <input type='button' value='Set Values' id='set_values'
-                          onClick="">
+                          onClick="computeBaseInformation()">
                 </td>
                 <td colspan="2">
                    <input type='button' value='Save Configuration' id='save_config'
-                          onClick="">
+                          onClick="saveConfig()">
                 </td>
              </tr>
          </table>
@@ -234,13 +152,13 @@
                <td>
                   To
                </td>
-               <td>
+               <td id='to_value_column'>
                   Placeholder
                </td>
                <td>
                   To Error
                </td>
-               <td>
+               <td id='to_error_column'>
                   Placeholder
                </td>
             </tr>
@@ -248,13 +166,13 @@
                <td>
                   Ve
                </td>
-               <td>
+               <td id='ve_value_column'>
                   Placeholder
                </td>
                <td>
                   Ve Error
                </td>
-               <td>
+               <td id='ve_error_column'>
                   Placeholder
                </td>
             </tr>
@@ -262,14 +180,14 @@
                <td>
                   Total Impulse
                </td>
-               <td>
+               <td id='total_impulse_column'>
                   Placeholder
                </td>
             </tr>
              <tr>
                 <td colspan="2">
                    <input type='button' value='Find Values' id='find_values'
-                          onClick="">
+                          onClick="computeValues()">
                 </td>
              </tr>
          </table>
