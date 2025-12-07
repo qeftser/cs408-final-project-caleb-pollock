@@ -1,0 +1,52 @@
+
+there will be two data types in the database. The first will be 
+files. These will contain a list of attributes and datapoints.
+Each datapoint will also have a set of attributes with it.
+There will also be flags everywhere for if something has the
+expected attributes, as I am not sure if there is a way to upsert
+but I will see.
+
+file format:
+{
+   "Type": "file",
+   "name": "--- file name ---",
+   "start": 0,
+   "end": N,
+
+   "Pe": 0,
+   "k": 0,
+   "Pa": 0,
+   "Ae": 0,
+   "A_star": 0,
+   "R": 0,
+   "pp": 0,
+
+   "mass_burned": 0,
+   "Ve": 0,
+   "Ve_error": 0,
+   "total_impulse": 0,
+   "To": 0,
+   "To_error": 0,
+
+   "points": [
+      { 
+        "interval": 0,
+        "time": 0,
+        "thrust": 0,
+        "M": 0,
+        "Po": 0, 
+      }
+   ]
+}
+
+We also support images. These are considerably simpler though. All
+we have is a name and a file name to look up in s3.
+
+If we can't get that we can just throw the base64 image in here...
+
+{
+   "Type": "image",
+   "name": "--- image name ---",
+   #"s3_name": "name in s3"
+   "data": "base64 image string...",
+}

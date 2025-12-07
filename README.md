@@ -103,3 +103,13 @@ I plan to use the other pages for file upload and management, ie.
 uploading downloading and deleting files from the system. The main
 page will just be a directory to the other two :).
 
+## Sources Used
+ * https://www.chartjs.org/
+ * https://stackoverflow.com/questions/20206038/converting-chart-js-canvas-chart-to-image-using-todataurl-results-in-blank-im
+ * https://medium.com/@anjanava.biswas/nodejs-runtime-environment-with-aws-lambda-layers-f3914613e20e
+ * https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/ScanCommand/
+ * https://stackoverflow.com/questions/28109150/check-if-user-input-is-an-integer-javascript
+ * https://stackoverflow.com/questions/2794137/sanitizing-user-input-before-adding-it-to-the-dom-in-javascript
+ * https://www.geeksforgeeks.org/javascript/how-to-convert-base64-to-file-in-javascript/
+ * https://www.geeksforgeeks.org/javascript/how-to-trigger-a-file-download-when-clicking-an-html-button-or-javascript/
+ * https://www.geeksforgeeks.org/html/how-to-upload-files-in-javascript/

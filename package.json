@@ -1,14 +1,17 @@
 {
   "name": "web-dev",
   "version": "0.0.1",
-  "description": "Learning to Code",
+  "description": "CS408 Final Project",
   "private": true,
   "license": "MIT",
-  "author": "Pat von Student",
+  "author": "Caleb Pollock",
   "scripts": {
     "lint:html": "htmlhint"
-    },
+  },
   "devDependencies": {
     "qunit": "^2.21.1"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1"
   }
 }
