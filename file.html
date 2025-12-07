@@ -7,6 +7,7 @@
   <meta name="description" content="final project for cs408">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
+    <script src="js/file.js"></script>
 </head>
 
 <body>
@@ -19,69 +20,18 @@
 
       <div class="file_data">
          <h1>file data</h1>
-         <table class='listing-table'>
-            <tr>
-               <th>
-                  Name
-               </th>
-               <th>
-                  Status
-               </th>
-               <th>
-                  Actions
-               </th>
-            </tr>
-            <tr>
-               <td>placeholder</td>
-               <td>Loaded</td>
-               <td>Download, Delete, Image</td>
-            </tr>
-            <tr>
-               <td>placeholder</td>
-               <td>Processed</td>
-               <td>Download, Delete, Image</td>
-            </tr>
-            <tr>
-               <td>placeholder</td>
-               <td>Corrupted</td>
-               <td>Download, Delete, Image</td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                   <input type='button' value='Upload File' id='upload_file'
-                          onClick="">
-                </td>
-                <td colspan="1">
-                   <input type='file' id='upload_file_target'
-                          onClick="">
-                </td>
-            </tr>
+         <table id='file-data-listing-table' class='file-data-listing-table'>
          </table>
+         <form id='dataFileUploadForm' method="post" enctype="multipart/form-data">
+             <input type='button' value='Upload File' id='upload_file'
+                    onClick="uploadDataFile()">
+             <input type='file' id='upload_file_target' name="file">
+         </form>
       </div>
 
       <div class="file_images">
          <h1>file images</h1>
-         <table class='listing-table'>
-            <tr>
-               <th>
-                  Name
-               </th>
-               <th>
-                  Actions
-               </th>
-            </tr>
-            <tr>
-               <td>placeholder</td>
-               <td>Download, Delete</td>
-            </tr>
-            <tr>
-               <td>placeholder</td>
-               <td>Download, Delete</td>
-            </tr>
-            <tr>
-               <td>placeholder</td>
-               <td>Download, Delete</td>
-            </tr>
+         <table id='image-data-listing-table' class='image-data-listing-table'>
          </table>
       </div>
    </div>
