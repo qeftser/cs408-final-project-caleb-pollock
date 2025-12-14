@@ -12,7 +12,65 @@ need to be set to. I will admit that I don't understand what
 most of the values mean, I just manipulated the equations to
 get the values that I was asked to find and then made sure
 that the people who did have context for the numbers thought
-that the output was correct :).
+that the output was correct :).    
+    
+If you want a demo of the value calculation, go to graphing
+and select ``launch_2_filled_bak.json``. This file has
+everything ready. Then press Find Values and wait. The program
+should update after a few seconds with the corrected thrust
+and pressure of exhaust showing as well.    
+   
+The same values for all parameters will work for the launch_3.json
+file in the repository. If you paste them in and then select
+the appropriate start and end points for the motor burn time,
+the find values call should work for it as well.
+
+## Features
+
+### Index
+
+This is just meant to be a landing page and doesn't
+have a ton of functionality other than as a passthrough
+for the other pages. All the other pages have form 
+submisson and various other features though, so I should
+be good in terms of that requirement. I just didn't think
+it worked organizationally to have any logic on the main
+page :/.
+
+### File Management
+
+This page allows files to be uploaded to the database, images
+of the data in files to be generated, and downloading or
+deleting of both data and image files.
+
+### Graphing
+
+This page will display the graphs of files that have been 
+uploaded to the system and allows users to run a program
+to find a correct thrust curve and the values for velocity
+and temperature of exhaust, total impulse, mass flow rate,
+and pressure of exhaust for the data in the file. To do
+this, several values will need to be entered by the user,
+including various pressures and characteristics of the 
+motor being used. The set values button updates the state,
+save configuration will update the state and send it to
+the server, and find values will run the algorithm that computes
+the unknown information. This takes a bit and will produce garbage
+if you don't have things set right.
+
+### Viewing
+
+I figured it would be good to have a way to view images before
+downloading them to ensure that you got the right one. This
+page does that. In case a ton of images end up getting produced,
+you can prefix filter the images by entering the prefix of the
+image file you are looing for, followed by pressing the filter
+button. This will only display images with a matching prefix.
+Selecting an image causes it to display the image, not a chart
+object! That way users will have an idea of what they would be
+downloading.
+
+# Old stuff from project specification
 
 ## General Theme
 
