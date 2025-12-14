@@ -1,38 +1,38 @@
 [
    {
-      "interval": 0.0,
+      "time": 0.0,
       "thrust": 0.0
    },
    {
-      "interval": 0.1,
+      "time": 0.1,
       "thrust": 0.1
    },
    {
-      "interval": 0.2,
+      "time": 0.2,
       "thrust": 0.2
    },
    {
-      "interval": 0.4,
+      "time": 0.4,
       "thrust": 0.4
    },
    {
-      "interval": 0.8,
+      "time": 0.8,
       "thrust": 0.8
    },
    {
-      "interval": 0.9,
+      "time": 0.9,
       "thrust": 0.9
    },
    {
-      "interval": 1.0,
+      "time": 1.0,
       "thrust": 1.0
    },
    {
-      "interval": 1.2,
+      "time": 1.2,
       "thrust": 1.2
    },
    {
-      "interval": 1.4,
+      "time": 1.4,
       "thrust": 1.4
    }
 ]

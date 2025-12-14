@@ -17,6 +17,14 @@ input {
    grid-template-rows: 2.5fr 1fr;
 }
 
+.view_content {
+   display: grid;
+   column-gap: 40px;
+   row-gap: 20px;
+   grid-template-columns: 2.0fr 1fr;
+   grid-template-rows: 2.0fr 1fr;
+}
+
 .file_content {
    display: grid;
    column-gap: 20px;
@@ -47,4 +55,15 @@ th, td {
 .graph_menu th, td {
    padding-top: 2px;
    padding-bottom: 2px;
+}
+
+.gi-display {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.code-snippet {
+   border: 0;
+   bgcolor: #E0E0E0;
+   width: 100%;
 }

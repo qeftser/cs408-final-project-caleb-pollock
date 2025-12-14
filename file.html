@@ -7,7 +7,8 @@
   <meta name="description" content="final project for cs408">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
-    <script src="js/file.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script src="js/file.js"></script>
 </head>
 
 <body>
@@ -27,6 +28,43 @@
                     onClick="uploadDataFile()">
              <input type='file' id='upload_file_target' name="file">
          </form>
+         <p>
+            Files uploaded to the site should be in the following
+            JSON format:
+         </p>
+         <table class="code-snippet">
+            <tbody>
+               <tr>
+                  <td>
+                     <pre>
+                     <span>
+            [
+               {
+                  "time":   [float]
+                  "thrust": [float]
+               },
+               {
+                  "time":   [float]
+                  "thrust": [float]
+               },
+               {
+                  "time":   [float]
+                  "thrust": [float]
+               },
+               ...
+            ]
+                     </span>
+                     </pre>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <p>
+            Where the time values represent the point
+            at time (in seconds) where the thrust was measured,
+            and thrust represents the thrust in newtons recorded
+            at that point in time.
+         </p>
       </div>
 
       <div class="file_images">

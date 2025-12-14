@@ -24,8 +24,10 @@ export const handler = async (event, context) => {
  let query;
  let contents;
  let response;
+ let elapsed;
  const headers = {
    "Content-Type": "application/json",
+   "Access-Control-Allow-Origin": "*",
  };
 
  try {
@@ -34,7 +36,8 @@ export const handler = async (event, context) => {
     case "GET /files":
 
        query = {
-           TableName: tableName
+           TableName: tableName,
+           ProjectionExpression: "id, points, start_pos, end_pos"
        };
 
        response = await dynamo.send(new ScanCommand(query));
@@ -60,6 +63,14 @@ export const handler = async (event, context) => {
 
       param = event.pathParameters.name;
       contents = JSON.parse(event.body);
+      
+      elapsed = 0.0;
+      for (var i = 0; i < contents.length; i++) {
+         contents[i].M = 0;
+         contents[i].Po = 0;
+         contents[i].interval = contents[i].time - elapsed;
+         elapsed = contents[i].time;
+      }
 
       query = {
          Item: {
@@ -91,7 +102,19 @@ export const handler = async (event, context) => {
      case "POST /files/upload/{name}":
 
        param = event.pathParameters.name;
-       contents = JSON.parse(event.body);
+       contents = atob(event.body);
+       contents = contents.slice(contents.indexOf('\n\r\n'));
+       contents = contents.slice(0,contents.lastIndexOf('\n\r\n'))
+       contents = JSON.parse(contents);
+
+
+       elapsed = 0.0;
+       for (var i = 0; i < contents.length; i++) {
+          contents[i].M = 0;
+          contents[i].Po = 0;
+          contents[i].interval = contents[i].time - elapsed;
+          elapsed = contents[i].time;
+       }
 
        query = {
           Item: {
@@ -117,14 +140,14 @@ export const handler = async (event, context) => {
        };
 
        response = await dynamo.send(new PutCommand(query));
-       body = response;
+       body = contents;
        break;
 
-     case "PUT /files/update/{name}":
+     case "PUT /files/update/{id}":
 
        // first just delete the item then put it in
 
-       param = event.pathParameters.name;
+       param = event.pathParameters.id;
        contents = JSON.parse(event.body);
 
        query = {
@@ -139,7 +162,7 @@ export const handler = async (event, context) => {
        query = {
           TableName: tableName,
           Item: {
-             id:            contents.name,
+             id:            contents.id,
              start:         contents.start,
              end:           contents.end,
              Pe:            contents.Pe,
@@ -163,8 +186,8 @@ export const handler = async (event, context) => {
        body = `Put item ${param}`;
        break;
 
-     case "DELETE /files/{name}":
-       param = event.pathParameters.name;
+     case "DELETE /files/{id}":
+       param = event.pathParameters.id;
 
        query = {
           TableName: tableName,
@@ -173,13 +196,14 @@ export const handler = async (event, context) => {
           }
        };
 
-       response = await dynamo.send(new DeleteCommand(delete_item));
+       response = await dynamo.send(new DeleteCommand(query));
        body = `Delete item ${param}`;
        break;
 
      case "GET /images":
        query = {
-           TableName: imageTableName
+           TableName: imageTableName,
+           ProjectionExpression: "id"
        };
 
        response = await dynamo.send(new ScanCommand(query));
@@ -201,29 +225,14 @@ export const handler = async (event, context) => {
        response = await dynamo.send(new PutCommand(query));
        body = response;
        break;
-/*
-     case "GET /images/{name}":
-
-       param = event.pathParameters.name;
-
-       query = {
-          TableName: imageTableName,
-          Key: {
-             id: param
-          }
-       };
-
-       response = await dynamo.send(new GetCommand(query));
-       body = response.Item;
-       break;
-       */
 
      case "GET /images/{prefix}":
 
        param = event.pathParameters.prefix;
   
        query = {
-          TableName: imageTableName
+          TableName: imageTableName,
+          ProjectionExpression: "id"
        };
 
        response = await dynamo.send(new ScanCommand(query));
@@ -236,9 +245,24 @@ export const handler = async (event, context) => {
        }
        break;
 
+     case "GET /images/download/{id}":
+
+       param = event.pathParameters.id;
+
+       query = {
+          TableName: imageTableName,
+          Key: {
+             id: param,
+          }
+       };
+
+       response = await dynamo.send(new GetCommand(query));
+       body = response.Item;
+       break;
+
      case "DELETE /images/{id}":
 
-       param = event.pathParameters.name;
+       param = event.pathParameters.id;
 
        query = {
           TableName: imageTableName,

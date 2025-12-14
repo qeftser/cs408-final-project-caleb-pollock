@@ -1,5 +1,19 @@
 # Final Project CS408
 
+## Information On Using the Website
+
+There are a couple of files you can use in the repository
+for uploading and trying out the system with. They are
+``launch_2.json`` and ``sample_file.txt``. The file
+``launch_2_filled.json`` has had the correct parameters
+set for the analysis and the full graph generated for it,
+so you can look at that for an idea of what the parameters
+need to be set to. I will admit that I don't understand what
+most of the values mean, I just manipulated the equations to
+get the values that I was asked to find and then made sure
+that the people who did have context for the numbers thought
+that the output was correct :).
+
 ## General Theme
 
 I have been hanging out with the guys on the rocketry club lately, and have had the 
@@ -113,3 +127,4 @@ page will just be a directory to the other two :).
  * https://www.geeksforgeeks.org/javascript/how-to-convert-base64-to-file-in-javascript/
  * https://www.geeksforgeeks.org/javascript/how-to-trigger-a-file-download-when-clicking-an-html-button-or-javascript/
  * https://www.geeksforgeeks.org/html/how-to-upload-files-in-javascript/
+ * https://stackoverflow.com/questions/44240726/chartjs-using-multiple-y-axes

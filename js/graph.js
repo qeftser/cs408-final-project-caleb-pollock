@@ -1,4 +1,3 @@
-//import Chart from "../node_modules/chart.js/dist/chart.umd.min.js";
 
 // data processing functions
 const GRAVITY = 9.807
@@ -15,7 +14,6 @@ function compute_matching_M(state, Ve) {
       m_values.push( (samples[i].thrust + (accum*GRAVITY)) / Ve );
 
       accum += m_values[i - state.start] * samples[i].interval;
-
    }
 
    return m_values;
@@ -29,7 +27,7 @@ function compute_matching_Po(state, To) {
    let samples = state.points;
 
    for (var i = state.start; i <= state.end; i++) {
-      po_values.push(samples[i].M / (state.A_star*Math.sqrt((state.k/(state.R*state.To))*(Math.pow(2.0/(state.k+1),(state.k+1)/(2*(state.k-1)))))));
+      po_values.push(samples[i].M / (state.A_star*Math.sqrt((state.k/(state.R*To))*(Math.pow(2.0/(state.k+1),(state.k+1)/(2*(state.k-1)))))));
    }
 
    return po_values
@@ -38,7 +36,7 @@ function compute_matching_Po(state, To) {
 function Po_E(state, po_values) {
 
    let err = 0.0;
-   const count = (state.end - state.start) + 1;
+   const count = po_values.length;
 
    let samples = state.points;
 
@@ -49,18 +47,21 @@ function Po_E(state, po_values) {
 
       let rhs = ((2.0*state.k*state.k)/(state.k-1))*Math.pow(2.0/(state.k+1),(state.k+1)/(state.k-1));
 
-      rhs *= (po_values[i]*po_values[i])-(Math.pow(state.Pe,(state.k-1)/state.k)*Math.pow(state.Po,2-(state.k-1)/state.k));
+
+      rhs *= (po_values[i]*po_values[i])-(Math.pow(state.Pe,(state.k-1)/state.k)*Math.pow(state.Po,2.0-(state.k-1)/state.k));
 
       err += (rhs - lhs) * (rhs - lhs);
+
    }
 
-   return err;
+   // log-squared error
+   return Math.log(err);
 };
 
 function M_E(state, m_values, Ve) {
 
    let mB_err = -1 * state.mass_burned;
-   const count = (state.end - state.start) + 1;
+   const count = m_values.length;
 
    for (let i = 0; i < count; i++) {
       mB_err += m_values[i] * state.points[i+state.start].interval;
@@ -88,15 +89,16 @@ function triangle(a, fA, b, fB) {
 };
 
 function sanitizeInteger(value) {
-   if (value === parseInt(value,10))
-      return value;
-   else
+   if (!isNaN(parseInt(value,10)))
+      return Math.min(parseInt(value,10),1e15);
+   else {
       return 0;
+   }
 }
 
 function sanitizeNumber(value) {
-   if (value === parseFloat(value))
-      return value;
+   if (!isNaN(parseFloat(value)))
+      return Math.min(parseFloat(value),1e15);
    else
       return 0;
 }
@@ -125,8 +127,8 @@ function computeBaseInformation() {
    let start = sanitizeInteger(document.getElementById("start_pos").value);
    document.getElementById("start_pos").value = start;
 
-   let end = sanitizeInteger(document.getElementById("end_pos").value);
-   document.getElementById("end_pos").value = start;
+   let end = Math.max(start,sanitizeInteger(document.getElementById("end_pos").value));
+   document.getElementById("end_pos").value = end;
 
    let Pe = sanitizeNumber(document.getElementById("send_Pe").value);
    document.getElementById("send_Pe").value = Pe;
@@ -153,7 +155,7 @@ function computeBaseInformation() {
    prior /= start;
 
    let post = 0.0;
-   for (let i = end+1; i < count; ++i)
+   for (let i = end; i < count; ++i)
       post += state.points[i].thrust;
    post /= (count - end) + 1;
 
@@ -171,6 +173,7 @@ function computeBaseInformation() {
    state.A_star = A_star;
    state.R = R;
    state.pp = pp;
+   state.Po = 0;
    
    let time_accum = 0.0;
    for (let i = 0; i < count; i++) {
@@ -198,8 +201,8 @@ function computeVeAndMAndTotalImpulse(state) {
       }
    }
 
-   state.Ve = best_Ve;
-   state.Ve_error = Ve_err;
+   state.Ve = Math.min(best_Ve,1e15);
+   state.Ve_error = Math.min(Ve_err,1e15);
    for (let i = state.start; i <= state.end; i++) {
       state.points[i].M = best_m[i - state.start];
    }
@@ -213,30 +216,32 @@ function computeVeAndMAndTotalImpulse(state) {
                                 time+state.points[i+1].interval,
                                 state.points[i+1].M*state.Ve);
    }
-   state.total_impulse = total_impulse;
+   state.total_impulse = Math.min(total_impulse,1e15);
 }
 
 function computePoAndTo(state) {
    console.log("computing Po and To");
 
    let best_To = 0.0;
-   let To_err = 9999999999999999999999999999.0;
+   let To_err = 9999999999999999999.0;
    let best_Po = []
 
-   for (let To = 0.0; To < 10000.0; To += 0.00625) {
+   for (let To = 0.0; To < 5000.0; To += 0.00625) {
+   //for (let To = 1800.0; To < 1801.0; To += 4.05) {
 
       po_values = compute_matching_Po(state,To);
       let err = Po_E(state,po_values);
 
       if (err < To_err) {
+         console.log(err);
          best_Po = po_values.slice();
          best_To = To;
          To_err = err;
       }
    }
 
-   state.To = best_To;
-   state.To_error = To_err;
+   state.To = Math.min(best_To,1e15);
+   state.To_error = Math.min(To_err,1e15);
    for (let i = state.start; i <= state.end; i++) {
       state.points[i].Po = best_Po[i - state.start];
    }
@@ -251,63 +256,12 @@ function computeValues() {
    computePoAndTo(state);
    document.getElementById('to_value_column').innerHTML = `${state.To}`;
    document.getElementById('to_error_column').innerHTML = `${state.To_error}`;
+   saveConfig();
 }
 
-// the graph we are using
-const ctx = document.getElementById('data_graph');
+let chart = null;
 
-Chart.defaults.color = "#000";
-
-chart = null;
-if (ctx) {
-   chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [0,1,2,3,4,5],
-      datasets: [{
-        label: 'thrust',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 4
-      }]
-    },
-    options: {
-      plugins: {
-         legend: {
-            labels: {
-               font: {
-                  size: 20
-               }
-            }
-         }
-      },
-      scales: {
-        y: {
-          grid: {
-             lineWidth: 2
-          },
-          ticks: {
-             font: {
-                size: 16,
-             }
-          },
-          beginAtZero: true
-        },
-        x: {
-          grid: {
-             lineWidth: 2
-          },
-          ticks: {
-             font: {
-                size: 16
-             }
-          },
-        }
-      }
-    }
-   });
-}
-
-// our functions
+// our  functions
 
 function startChange(val) {
    document.getElementById('start_pos_out').innerHTML = val;
@@ -375,7 +329,9 @@ function createChart() {
    console.log(thrust_values);
    console.log(timesteps);
 
-   new Chart(ctx, {
+   if (chart !== null)
+      chart.destroy();
+   chart = new Chart(ctx, {
       type: 'line',
       data: {
          labels: timesteps,
@@ -383,17 +339,20 @@ function createChart() {
             {
                label: 'thrust',
                data: thrust_values,
-               borderWidth: 4
+               borderWidth: 4,
+               yAxisID: 'y1'
             },
             {
                label: 'corrected thrust',
                data: m_values,
-               borderWidth: 4
+               borderWidth: 4,
+               yAxisID: 'y1'
             },
             {
                label: 'pressure of exhaust',
                data: po_values,
-               borderWidth: 4
+               borderWidth: 4,
+               yAxisID: 'y2'
             }
          ]
       },
@@ -408,16 +367,31 @@ function createChart() {
             }
          },
          scales: {
-            y: {
-               grid: {
-                  lineWidth: 2
-               },
-               ticks: {
-                  font: {
-                     size: 16,
-                  }
-               },
-               beginAtZero: true
+            y1: {
+              position: "left",
+              stacked: false,
+              grid: {
+                 lineWidth: 2
+              },
+              ticks: {
+                 font: {
+                    size: 16,
+                 }
+              },
+              beginAtZero: true
+            },
+            y2: {
+              position: "right",
+              stacked: false,
+              grid: {
+                 lineWidth: 2
+              },
+              ticks: {
+                 font: {
+                    size: 16,
+                 }
+              },
+              beginAtZero: true
             },
             x: {
                grid: {
@@ -432,7 +406,6 @@ function createChart() {
          }
       }
    });
-
 }
 
 function selectFileValue(value) {
@@ -440,9 +413,14 @@ function selectFileValue(value) {
 
    xhr.addEventListener("load", function () {
       state = JSON.parse(xhr.responseText);
+      console.log(state);
 
-      document.getElementById("start_pos").value = state.start_pos;
-      document.getElementById("end_pos").value = state.end_pos;
+      document.getElementById("start_pos").value = state.start;
+      startChange(state.start);
+      document.getElementById("start_pos").max = state.points.length
+      document.getElementById("end_pos").value = state.end;
+      endChange(state.end);
+      document.getElementById("end_pos").max = state.points.length
       document.getElementById("send_Pe").value = state.Pe;
       document.getElementById("send_k").value = state.k;
       document.getElementById("send_pp").value = state.pp;
@@ -451,6 +429,13 @@ function selectFileValue(value) {
       document.getElementById("send_Astar").value = state.A_star;
       document.getElementById("send_R").value = state.R;
       document.getElementById("send_name").value = state.id;
+      document.getElementById("selected_name").innerHTML = state.id;
+
+      document.getElementById('to_value_column').innerHTML = state.To;
+      document.getElementById('to_error_column').innerHTML = state.To_error;
+      document.getElementById('ve_value_column').innerHTML = state.Ve;
+      document.getElementById('ve_error_column').innerHTML = state.Ve_error;
+      document.getElementById('total_impulse_column').innerHTML = state.total_impulse;
 
       computeBaseInformation();
       createChart();
@@ -471,7 +456,8 @@ function saveConfig() {
    xhr.addEventListener("load", function () {
       // do nothing
       console.log(xhr.responseText);
-
+      selectFileValue(state.id);
+      getGraphDataList();
    });
 
    console.log(JSON.stringify(state));
